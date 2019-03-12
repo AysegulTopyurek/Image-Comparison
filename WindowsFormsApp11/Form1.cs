@@ -31,25 +31,15 @@ namespace WindowsFormsApp11
         }
 
         Image img;
+        //  this.Button1.Image = (Image)(new Bitmap(MyImage, new Size(100,100)));
 
         private void button18_Click(object sender, EventArgs e)
         {
-
-
-
-
-
             OpenFileDialog openDialog = new OpenFileDialog();
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
                 img = new Bitmap(openDialog.FileName);
-
-
-
             }
-
-
-
             int widthThird = (int)((double)img.Width / 4.0 + 0.5);
             int heightThird = (int)((double)img.Height / 4.0 + 0.5);
             //var img = Image.FromFile("media\\a.png");
@@ -63,26 +53,42 @@ namespace WindowsFormsApp11
                     bmps[i, j] = new Bitmap(widthThird, heightThird);
                     Graphics g = Graphics.FromImage(bmps[i, j]);
                     g.DrawImage(img, new Rectangle(0, 0, widthThird, heightThird), new Rectangle(j * widthThird, i * heightThird, widthThird, heightThird), GraphicsUnit.Pixel);
+
                     g.Dispose();
 
                 }
             }
-            button1.Image = bmps[0, 0];
-            button2.Image = bmps[0, 1];
-            button3.Image = bmps[0, 2];
-            button4.Image = bmps[0, 3];
-            button5.Image = bmps[1, 0];
-            button6.Image = bmps[1, 1];
-            button7.Image = bmps[1, 2];
-            button8.Image = bmps[1, 3];
-            button9.Image = bmps[2, 0];
-            button10.Image = bmps[2, 1];
-            button11.Image = bmps[2, 2];
-            button12.Image = bmps[2, 3];
-            button13.Image = bmps[3, 0];
-            button14.Image = bmps[3, 1];
-            button15.Image = bmps[3, 2];
-            button16.Image = bmps[3, 3];
+            button1.Image = (Image)(new Bitmap(bmps[0, 0], new Size(100, 100)));
+            button2.Image = (Image)(new Bitmap(bmps[0, 1], new Size(100, 100)));
+            button3.Image = (Image)(new Bitmap(bmps[0, 2], new Size(100, 100)));
+            button4.Image = (Image)(new Bitmap(bmps[0, 3], new Size(100, 100)));
+            button5.Image = (Image)(new Bitmap(bmps[1, 0], new Size(100, 100)));
+            button6.Image = (Image)(new Bitmap(bmps[1, 1], new Size(100, 100)));
+            button7.Image = (Image)(new Bitmap(bmps[1, 2], new Size(100, 100)));
+            button8.Image = (Image)(new Bitmap(bmps[1, 3], new Size(100, 100)));
+            button9.Image = (Image)(new Bitmap(bmps[2, 0], new Size(100, 100)));
+            button10.Image = (Image)(new Bitmap(bmps[2, 1], new Size(100, 100)));
+            button11.Image = (Image)(new Bitmap(bmps[2, 2], new Size(100, 100)));
+            button12.Image = (Image)(new Bitmap(bmps[2, 3], new Size(100, 100)));
+            button13.Image = (Image)(new Bitmap(bmps[3, 0], new Size(100, 100)));
+            button14.Image = (Image)(new Bitmap(bmps[3, 1], new Size(100, 100)));
+            button15.Image = (Image)(new Bitmap(bmps[3, 2], new Size(100, 100)));
+            button16.Image = (Image)(new Bitmap(bmps[3, 3], new Size(100, 100)));
+            //button2.Image = bmps[0, 1];
+            //button3.Image = bmps[0, 2];
+            //button4.Image = bmps[0, 3];
+            //button5.Image = bmps[1, 0];
+            //button6.Image = bmps[1, 1];
+            //button7.Image = bmps[1, 2];
+            //button8.Image = bmps[1, 3];
+            //button9.Image = bmps[2, 0];
+            //button10.Image = bmps[2, 1];
+            //button11.Image = bmps[2, 2];
+            //button12.Image = bmps[2, 3];
+            //button13.Image = bmps[3, 0];
+            //button14.Image = bmps[3, 1];
+            //button15.Image = bmps[3, 2];
+            //button16.Image = bmps[3, 3];
 
 
 
@@ -97,9 +103,36 @@ namespace WindowsFormsApp11
         {
             r = new Random();
 
+        //    buttons = new List<Button>
+        //    {
+        //    button1,
+        //    button2,
+        //    button3,
+        //    button4,
+        //    button5,
+        //    button6,
+        //    button7,
+        //    button8,
+        //    button9,
+        //    button10,
+        //    button11,
+        //    button12,
+        //    button13,
+        //    button14,
+        //    button15,
+        //    button16,
+        //};
+            foreach (Button button in buttons)
+                button.Visible = false;
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            //TODO: butonlar görünmez yapılacak
+            
             buttons = new List<Button>
             {
-             button1,
+            button1,
             button2,
             button3,
             button4,
@@ -118,14 +151,28 @@ namespace WindowsFormsApp11
         };
             foreach (Button button in buttons)
                 button.Visible = false;
-        }
 
-        private void button17_Click(object sender, EventArgs e)
-        {
+            r = new Random();
+            List<int> sayilar = new List<int>();
+            var randomValue = 0;
+            int i=1;
+            for (int j=0; j<buttons.Count;j++)
+            {
+                while (i <= 16)
+                {
+                    randomValue = r.Next(0, 17);
+                    if (!sayilar.Contains(randomValue))
+                    {
+                        i++;
+                        sayilar.Add(randomValue);
+                        Button tmp = buttons[j];
+                        buttons[j] = buttons[randomValue];
+                    }
+                }
+            }
 
-            var randomValue = r.Next(0, 16);
-            Button btn = this.Controls.Find("button" + randomValue, true).FirstOrDefault() as Button;
-            btn.Visible = true;
+            //Button btn = this.Controls.Find("button" + randomValue, true).FirstOrDefault() as Button;
+            //btn.Visible = true;
 
         }
     }

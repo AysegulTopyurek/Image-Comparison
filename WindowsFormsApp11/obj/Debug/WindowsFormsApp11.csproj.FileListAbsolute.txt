@@ -18,3 +18,13 @@ C:\Users\user\Desktop\PROJELER\puzzle\WindowsFormsApp11\WindowsFormsApp11\obj\De
 C:\Users\user\Desktop\PROJELER\puzzle\WindowsFormsApp11\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.csproj.CoreCompileInputs.cache
 C:\Users\user\Desktop\PROJELER\puzzle\WindowsFormsApp11\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.exe
 C:\Users\user\Desktop\PROJELER\puzzle\WindowsFormsApp11\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.pdb
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\bin\Debug\WindowsFormsApp11.exe.config
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\bin\Debug\WindowsFormsApp11.exe
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\bin\Debug\WindowsFormsApp11.pdb
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.csprojAssemblyReference.cache
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.Form1.resources
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.Properties.Resources.resources
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.csproj.GenerateResource.cache
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.csproj.CoreCompileInputs.cache
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.exe
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.pdb
