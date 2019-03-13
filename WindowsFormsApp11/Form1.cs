@@ -128,9 +128,9 @@ namespace WindowsFormsApp11
 
         private void button17_Click(object sender, EventArgs e)
         {
-            //TODO: butonlar görünmez yapılacak
+            //TODO: kod toparlanacak
             
-            buttons = new List<Button>
+            Button[] buttons = 
             {
             button1,
             button2,
@@ -155,21 +155,26 @@ namespace WindowsFormsApp11
             r = new Random();
             List<int> sayilar = new List<int>();
             var randomValue = 0;
-            int i=1;
-            for (int j=0; j<buttons.Count;j++)
-            {
-                while (i <= 16)
+            int i=0;
+            //for (int j=0; j<buttons.Count;j++)
+            //{
+            Button tmp = new Button();
+            
+                while (i < 16)
                 {
-                    randomValue = r.Next(0, 17);
+                    randomValue = r.Next(0, 16);
                     if (!sayilar.Contains(randomValue))
                     {
-                        i++;
                         sayilar.Add(randomValue);
-                        Button tmp = buttons[j];
-                        buttons[j] = buttons[randomValue];
+                        tmp.Image= buttons[i].Image;
+                        buttons[i].Image = buttons[randomValue].Image;
+                        buttons[randomValue].Image = tmp.Image;
+                        i++;
                     }
                 }
-            }
+            foreach (Button button in buttons)
+                button.Visible = true;
+            //}
 
             //Button btn = this.Controls.Find("button" + randomValue, true).FirstOrDefault() as Button;
             //btn.Visible = true;
