@@ -28,3 +28,5 @@ C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.c
 C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.csproj.CoreCompileInputs.cache
 C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.exe
 C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.pdb
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\bin\Debug\Cocoa.i18n.dll
+C:\Users\Furkan\Desktop\dusunmek\WindowsFormsApp11\obj\Debug\WindowsFormsApp11.csproj.CopyComplete

@@ -1,0 +1,3 @@
+﻿The Cocoa.i18n project is inspired by:
+1, http://www.cnblogs.com/01codeworld/p/3162344.html
+2, http://www.codeproject.com/Articles/35159/WPF-Localization-Using-RESX-Files

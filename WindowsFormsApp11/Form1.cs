@@ -15,26 +15,20 @@ namespace WindowsFormsApp11
 {
     public partial class Form1 : Form
     {
+        Random r;
+        Image img;
+        Bitmap[,] bitmap;
+        List<Button> buttons;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        Image img;
-        //  this.Button1.Image = (Image)(new Bitmap(MyImage, new Size(100,100)));
 
         private void button18_Click(object sender, EventArgs e)
         {
+            //OpenThePicture();
             OpenFileDialog openDialog = new OpenFileDialog();
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
@@ -48,89 +42,27 @@ namespace WindowsFormsApp11
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    var index = i * 4 + j;
+                    int index = (i * 4 + j) + 1;
+                    //string str = "button" + index;
 
                     bmps[i, j] = new Bitmap(widthThird, heightThird);
                     Graphics g = Graphics.FromImage(bmps[i, j]);
                     g.DrawImage(img, new Rectangle(0, 0, widthThird, heightThird), new Rectangle(j * widthThird, i * heightThird, widthThird, heightThird), GraphicsUnit.Pixel);
-
-                    g.Dispose();
-
+                    resizeParts(bmps[i, j], index);
+            g.Dispose();
                 }
             }
-            button1.Image = (Image)(new Bitmap(bmps[0, 0], new Size(100, 100)));
-            button2.Image = (Image)(new Bitmap(bmps[0, 1], new Size(100, 100)));
-            button3.Image = (Image)(new Bitmap(bmps[0, 2], new Size(100, 100)));
-            button4.Image = (Image)(new Bitmap(bmps[0, 3], new Size(100, 100)));
-            button5.Image = (Image)(new Bitmap(bmps[1, 0], new Size(100, 100)));
-            button6.Image = (Image)(new Bitmap(bmps[1, 1], new Size(100, 100)));
-            button7.Image = (Image)(new Bitmap(bmps[1, 2], new Size(100, 100)));
-            button8.Image = (Image)(new Bitmap(bmps[1, 3], new Size(100, 100)));
-            button9.Image = (Image)(new Bitmap(bmps[2, 0], new Size(100, 100)));
-            button10.Image = (Image)(new Bitmap(bmps[2, 1], new Size(100, 100)));
-            button11.Image = (Image)(new Bitmap(bmps[2, 2], new Size(100, 100)));
-            button12.Image = (Image)(new Bitmap(bmps[2, 3], new Size(100, 100)));
-            button13.Image = (Image)(new Bitmap(bmps[3, 0], new Size(100, 100)));
-            button14.Image = (Image)(new Bitmap(bmps[3, 1], new Size(100, 100)));
-            button15.Image = (Image)(new Bitmap(bmps[3, 2], new Size(100, 100)));
-            button16.Image = (Image)(new Bitmap(bmps[3, 3], new Size(100, 100)));
-            //button2.Image = bmps[0, 1];
-            //button3.Image = bmps[0, 2];
-            //button4.Image = bmps[0, 3];
-            //button5.Image = bmps[1, 0];
-            //button6.Image = bmps[1, 1];
-            //button7.Image = bmps[1, 2];
-            //button8.Image = bmps[1, 3];
-            //button9.Image = bmps[2, 0];
-            //button10.Image = bmps[2, 1];
-            //button11.Image = bmps[2, 2];
-            //button12.Image = bmps[2, 3];
-            //button13.Image = bmps[3, 0];
-            //button14.Image = bmps[3, 1];
-            //button15.Image = bmps[3, 2];
-            //button16.Image = bmps[3, 3];
-
-
-
-
-
-
-
+            
         }
-        Random r;
-        List<Button> buttons;
-        private void Whack_A_Mole_Load(object sender, EventArgs e)
-        {
-            r = new Random();
-
-        //    buttons = new List<Button>
-        //    {
-        //    button1,
-        //    button2,
-        //    button3,
-        //    button4,
-        //    button5,
-        //    button6,
-        //    button7,
-        //    button8,
-        //    button9,
-        //    button10,
-        //    button11,
-        //    button12,
-        //    button13,
-        //    button14,
-        //    button15,
-        //    button16,
-        //};
-            foreach (Button button in buttons)
-                button.Visible = false;
-        }
+       
+        
 
         private void button17_Click(object sender, EventArgs e)
         {
             //TODO: kod toparlanacak
-            
-            Button[] buttons = 
+
+            //buttons = this.pnl.Controls.OfType<Button>().Where(a => a.Name.StartsWith("button")).ToList();
+            Button[] buttons =
             {
             button1,
             button2,
@@ -149,36 +81,92 @@ namespace WindowsFormsApp11
             button15,
             button16,
         };
-            foreach (Button button in buttons)
-                button.Visible = false;
-
-            r = new Random();
-            List<int> sayilar = new List<int>();
-            var randomValue = 0;
-            int i=0;
-            //for (int j=0; j<buttons.Count;j++)
-            //{
-            Button tmp = new Button();
-            
-                while (i < 16)
-                {
-                    randomValue = r.Next(0, 16);
-                    if (!sayilar.Contains(randomValue))
-                    {
-                        sayilar.Add(randomValue);
-                        tmp.Image= buttons[i].Image;
-                        buttons[i].Image = buttons[randomValue].Image;
-                        buttons[randomValue].Image = tmp.Image;
-                        i++;
-                    }
-                }
-            foreach (Button button in buttons)
-                button.Visible = true;
-            //}
-
+            btnVisibility(false, buttons);
+            shuffleButtons(buttons);
             //Button btn = this.Controls.Find("button" + randomValue, true).FirstOrDefault() as Button;
             //btn.Visible = true;
+        }
 
+        //Resim okuma işlemi yaptığımız fonksiyon
+        private void OpenThePicture()
+        {
+            //TODO: Hatalı uğraşılcak !! Çamaşırları makinaya attım şu ara o yüzden yarım kaldı: )
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = "Image Files| *.jpg; *.jpeg; *.png; *.gif; *.tif";
+            try
+            {
+                if (openDialog.ShowDialog() == DialogResult.OK)
+                {
+                    img = new Bitmap(openDialog.FileName);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Boş ya da hatalı içerik !");
+            }
+            
+        }
+
+        // Okuduğumuz resmi 16 eş parçaya ayıran fonksiyon
+        private void divideThePicture(Bitmap img)
+        {
+            //TODO: BİMEDİ TAMAMLANACAK :)
+            Bitmap[,] bmps = new Bitmap[4, 4];
+            int widthThird = (int)((double)img.Width / 4.0 + 0.5);
+            int heightThird = (int)((double)img.Height / 4.0 + 0.5);
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    int index = (i * 4 + j) + 1;
+                    bmps[i, j] = new Bitmap(widthThird, heightThird);
+                    Graphics g = Graphics.FromImage(bmps[i, j]);
+                    g.DrawImage(img, new Rectangle(0, 0, widthThird, heightThird), new Rectangle(j * widthThird, i * heightThird, widthThird, heightThird), GraphicsUnit.Pixel);
+                    resizeParts(bmps[i, j], index);
+                    g.Dispose();
+                }
+            }
+        }
+
+        /*  Form içerisindeki araçların tutulduğu yerden bize lazım olan button araması yapıp
+            buton içerisine tekrar boyutlandırılmış parça resimleri aktarıyoruz.
+        */
+        private void resizeParts(Bitmap bmps , int index)
+        {
+            //TODO: burası düzelecek 
+            bitmap = new Bitmap[4, 4];
+            Button button = this.Controls.Find("button" + index, true).FirstOrDefault() as Button;
+            button.Image = (Image)(new Bitmap(bmps, new Size(100, 100)));
+        }
+
+        //Butonların karıştırılmasını sağlar
+        private void shuffleButtons(Button[] buttons)
+        {
+            r = new Random();
+            Button tmp = new Button();
+            List<int> sayilar = new List<int>();
+            var randomValue = 0;
+            int i = 0;
+            while (i < 16)
+            {
+                randomValue = r.Next(0, 16);
+                if (!sayilar.Contains(randomValue))
+                {
+                    sayilar.Add(randomValue);
+                    tmp.Image = buttons[i].Image;
+                    buttons[i].Image = buttons[randomValue].Image;
+                    buttons[randomValue].Image = tmp.Image;
+                    i++;
+                }
+            }
+            btnVisibility(true, buttons);
+        }
+
+        // Butonların görünürlük değerini ayarlar
+        private void btnVisibility(bool visibility ,Button[] buttons )
+        {
+            foreach (Button button in buttons)
+                button.Visible = visibility;
         }
     }
 }
