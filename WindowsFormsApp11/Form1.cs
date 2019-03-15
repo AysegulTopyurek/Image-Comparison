@@ -19,6 +19,7 @@ namespace WindowsFormsApp11
         Image img;
         Bitmap[,] bitmap;
         List<Button> buttons;
+        Button selectedButton = null;
 
         public Form1()
         {
@@ -64,23 +65,23 @@ namespace WindowsFormsApp11
             //buttons = this.pnl.Controls.OfType<Button>().Where(a => a.Name.StartsWith("button")).ToList();
             Button[] buttons =
             {
-            button1,
-            button2,
-            button3,
-            button4,
-            button5,
-            button6,
-            button7,
-            button8,
-            button9,
-            button10,
-            button11,
-            button12,
-            button13,
-            button14,
-            button15,
-            button16,
-        };
+                button1,
+                button2,
+                button3,
+                button4,
+                button5,
+                button6,
+                button7,
+                button8,
+                button9,
+                button10,
+                button11,
+                button12,
+                button13,
+                button14,
+                button15,
+                button16,
+            };
             btnVisibility(false, buttons);
             shuffleButtons(buttons);
             //Button btn = this.Controls.Find("button" + randomValue, true).FirstOrDefault() as Button;
@@ -167,6 +168,24 @@ namespace WindowsFormsApp11
         {
             foreach (Button button in buttons)
                 button.Visible = visibility;
+        }
+
+        private void myClick(Object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            
+            if (selectedButton == null)
+            {
+                selectedButton = btn;
+            }
+            else if (btn != selectedButton)
+            {
+                Button swap = new Button();
+                swap.Image           = selectedButton.Image;
+                selectedButton.Image = btn.Image;
+                btn.Image   = swap.Image;
+                selectedButton = null;
+            }
         }
     }
 }
