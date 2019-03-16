@@ -15,11 +15,10 @@ namespace WindowsFormsApp11
 {
     public partial class Form1 : Form
     {
-        Random r;
         Image img;
         Bitmap[,] bitmap;
-        List<Button> buttons;
         Button selectedButton = null;
+        const int puzzleButtonCount = 16;
 
         public Form1()
         {
@@ -31,10 +30,11 @@ namespace WindowsFormsApp11
         {
             //OpenThePicture();
             OpenFileDialog openDialog = new OpenFileDialog();
-            if (openDialog.ShowDialog() == DialogResult.OK)
-            {
-                img = new Bitmap(openDialog.FileName);
-            }
+            // eğer resim başarılı seçilmediyse çık
+            if (openDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            img = new Bitmap(openDialog.FileName);
             int widthThird = (int)((double)img.Width / 4.0 + 0.5);
             int heightThird = (int)((double)img.Height / 4.0 + 0.5);
             //var img = Image.FromFile("media\\a.png");
@@ -50,42 +50,24 @@ namespace WindowsFormsApp11
                     Graphics g = Graphics.FromImage(bmps[i, j]);
                     g.DrawImage(img, new Rectangle(0, 0, widthThird, heightThird), new Rectangle(j * widthThird, i * heightThird, widthThird, heightThird), GraphicsUnit.Pixel);
                     resizeParts(bmps[i, j], index);
-            g.Dispose();
+                    g.Dispose();
                 }
             }
             
         }
-       
-        
-
+  
         private void button17_Click(object sender, EventArgs e)
         {
-            //TODO: kod toparlanacak
+            Button[] buttons = new Button[puzzleButtonCount];
 
-            //buttons = this.pnl.Controls.OfType<Button>().Where(a => a.Name.StartsWith("button")).ToList();
-            Button[] buttons =
+            // buttonları ayarla
+            for (int i = 0; i < puzzleButtonCount;)
             {
-                button1,
-                button2,
-                button3,
-                button4,
-                button5,
-                button6,
-                button7,
-                button8,
-                button9,
-                button10,
-                button11,
-                button12,
-                button13,
-                button14,
-                button15,
-                button16,
-            };
+                buttons[i] = this.Controls.Find("button" + ++i, true).FirstOrDefault() as Button;
+            }
+            
             btnVisibility(false, buttons);
             shuffleButtons(buttons);
-            //Button btn = this.Controls.Find("button" + randomValue, true).FirstOrDefault() as Button;
-            //btn.Visible = true;
         }
 
         //Resim okuma işlemi yaptığımız fonksiyon
@@ -94,6 +76,7 @@ namespace WindowsFormsApp11
             //TODO: Hatalı uğraşılcak !! Çamaşırları makinaya attım şu ara o yüzden yarım kaldı: )
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Image Files| *.jpg; *.jpeg; *.png; *.gif; *.tif";
+
             try
             {
                 if (openDialog.ShowDialog() == DialogResult.OK)
@@ -143,23 +126,35 @@ namespace WindowsFormsApp11
         //Butonların karıştırılmasını sağlar
         private void shuffleButtons(Button[] buttons)
         {
-            r = new Random();
-            Button tmp = new Button();
-            List<int> sayilar = new List<int>();
-            var randomValue = 0;
-            int i = 0;
-            while (i < 16)
+            if (buttons.Length != puzzleButtonCount)
             {
-                randomValue = r.Next(0, 16);
+                return;
+                // throw exception
+            }
+
+            Random r = new Random();
+            Button tmp = new Button();
+
+            List<int> sayilar = new List<int>();
+            // indisleri random olarak shuffle haline getir
+            for (int i = 0, randomValue = 0; i < puzzleButtonCount;)
+            {
+                randomValue = r.Next(0, puzzleButtonCount);
                 if (!sayilar.Contains(randomValue))
                 {
                     sayilar.Add(randomValue);
-                    tmp.Image = buttons[i].Image;
-                    buttons[i].Image = buttons[randomValue].Image;
-                    buttons[randomValue].Image = tmp.Image;
                     i++;
                 }
             }
+            
+            for (int i = 0, rnd; i < puzzleButtonCount; i++)
+            {
+                rnd = sayilar[i];
+                tmp.Image = buttons[i].Image;
+                buttons[i].Image = buttons[rnd].Image;
+                buttons[rnd].Image = tmp.Image;
+            }
+            
             btnVisibility(true, buttons);
         }
 

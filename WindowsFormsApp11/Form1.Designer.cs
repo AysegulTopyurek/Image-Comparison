@@ -49,8 +49,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button17 = new System.Windows.Forms.Button();
-            this.button18 = new System.Windows.Forms.Button();
+            this.mixButton = new System.Windows.Forms.Button();
+            this.chooseButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pnl.SuspendLayout();
@@ -295,27 +295,27 @@
             this.textBox2.Size = new System.Drawing.Size(93, 18);
             this.textBox2.TabIndex = 4;
             // 
-            // button17
+            // mixButton
             // 
-            this.button17.Location = new System.Drawing.Point(483, 57);
-            this.button17.Margin = new System.Windows.Forms.Padding(2);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(76, 27);
-            this.button17.TabIndex = 16;
-            this.button17.Text = "Mix";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
+            this.mixButton.Location = new System.Drawing.Point(483, 57);
+            this.mixButton.Margin = new System.Windows.Forms.Padding(2);
+            this.mixButton.Name = "mixButton";
+            this.mixButton.Size = new System.Drawing.Size(76, 27);
+            this.mixButton.TabIndex = 16;
+            this.mixButton.Text = "Mix";
+            this.mixButton.UseVisualStyleBackColor = true;
+            this.mixButton.Click += new System.EventHandler(this.button17_Click);
             // 
-            // button18
+            // chooseButton
             // 
-            this.button18.Location = new System.Drawing.Point(571, 57);
-            this.button18.Margin = new System.Windows.Forms.Padding(2);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(100, 27);
-            this.button18.TabIndex = 17;
-            this.button18.Text = "Choose image";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
+            this.chooseButton.Location = new System.Drawing.Point(571, 57);
+            this.chooseButton.Margin = new System.Windows.Forms.Padding(2);
+            this.chooseButton.Name = "chooseButton";
+            this.chooseButton.Size = new System.Drawing.Size(100, 27);
+            this.chooseButton.TabIndex = 17;
+            this.chooseButton.Text = "Choose image";
+            this.chooseButton.UseVisualStyleBackColor = true;
+            this.chooseButton.Click += new System.EventHandler(this.button18_Click);
             // 
             // openFileDialog1
             // 
@@ -326,8 +326,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(699, 447);
-            this.Controls.Add(this.button18);
-            this.Controls.Add(this.button17);
+            this.Controls.Add(this.chooseButton);
+            this.Controls.Add(this.mixButton);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -366,8 +366,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button mixButton;
+        private System.Windows.Forms.Button chooseButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
