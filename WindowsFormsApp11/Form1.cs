@@ -15,11 +15,13 @@ namespace WindowsFormsApp11
 {
     public partial class Form1 : Form
     {
-        Image img;
-        Bitmap[,] bitmap;
+        // Image img;
+        int puan = 0;
+        Bitmap[,] btnBitmap;
+        Bitmap[,] bmps;
         Button selectedButton = null;
         const int puzzleButtonCount = 16;
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -28,34 +30,14 @@ namespace WindowsFormsApp11
 
         private void button18_Click(object sender, EventArgs e)
         {
-            //OpenThePicture();
-            OpenFileDialog openDialog = new OpenFileDialog();
-            // eğer resim başarılı seçilmediyse çık
-            if (openDialog.ShowDialog() != DialogResult.OK)
+            Image img;
+            img = OpenThePicture();
+            if (img == null)    // Eğer null değer gelirse boş döner
                 return;
 
-            img = new Bitmap(openDialog.FileName);
-            int widthThird = (int)((double)img.Width / 4.0 + 0.5);
-            int heightThird = (int)((double)img.Height / 4.0 + 0.5);
-            //var img = Image.FromFile("media\\a.png");
-            Bitmap[,] bmps = new Bitmap[4, 4];
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    int index = (i * 4 + j) + 1;
-                    //string str = "button" + index;
-
-                    bmps[i, j] = new Bitmap(widthThird, heightThird);
-                    Graphics g = Graphics.FromImage(bmps[i, j]);
-                    g.DrawImage(img, new Rectangle(0, 0, widthThird, heightThird), new Rectangle(j * widthThird, i * heightThird, widthThird, heightThird), GraphicsUnit.Pixel);
-                    resizeParts(bmps[i, j], index);
-                    g.Dispose();
-                }
-            }
-            
+            divideThePicture(img);
         }
-  
+
         private void button17_Click(object sender, EventArgs e)
         {
             Button[] buttons = new Button[puzzleButtonCount];
@@ -65,37 +47,64 @@ namespace WindowsFormsApp11
             {
                 buttons[i] = this.Controls.Find("button" + ++i, true).FirstOrDefault() as Button;
             }
-            
+
             btnVisibility(false, buttons);
             shuffleButtons(buttons);
+            //string str = "button1";
+            //Bitmap bit = new Bitmap("C:\\Users\\Furkan\\Desktop\\Puzzle\\" + str + ".jpg");
+
+            //compareImages(btnBitmap[0,0], (Bitmap)buttons[0].Image);
+            // Karıştırma gerçekleştikten sonra eşleşen kare olup olmadığını kontrol eder.
+            if (!checkThePieces(buttons))
+            {
+                MessageBox.Show("Tekrar Karıştırınız.");
+                return;
+            }
+        }
+
+        private bool checkThePieces(Button[] buttons)
+        {
+            Bitmap bitmap;
+            int equal = 0;
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                string str = "button" + (i + 1);
+                //bitmap = new Bitmap("C:\\Users\\Furkan\\Desktop\\Puzzle\\"+str+".jpg");
+                //(Bitmap)buttons[i].Image)
+                if (compareImages(buttonÇek(str), (Bitmap)buttons[i].Image))
+                {
+                    equal++;
+                }
+            }
+            label3.Text = "" + equal;
+            if (equal>=1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //Resim okuma işlemi yaptığımız fonksiyon
-        private void OpenThePicture()
+        private Image OpenThePicture()
         {
-            //TODO: Hatalı uğraşılcak !! Çamaşırları makinaya attım şu ara o yüzden yarım kaldı: )
+            Image img;
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Image Files| *.jpg; *.jpeg; *.png; *.gif; *.tif";
+            if (openDialog.ShowDialog() != DialogResult.OK)
+                return null;
 
-            try
-            {
-                if (openDialog.ShowDialog() == DialogResult.OK)
-                {
-                    img = new Bitmap(openDialog.FileName);
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Boş ya da hatalı içerik !");
-            }
-            
+            img = new Bitmap(openDialog.FileName);
+            return img;
         }
 
         // Okuduğumuz resmi 16 eş parçaya ayıran fonksiyon
-        private void divideThePicture(Bitmap img)
+        private void divideThePicture(Image img)
         {
-            //TODO: BİMEDİ TAMAMLANACAK :)
-            Bitmap[,] bmps = new Bitmap[4, 4];
+            bmps = new Bitmap[4, 4];
+            btnBitmap = new Bitmap[4, 4];
             int widthThird = (int)((double)img.Width / 4.0 + 0.5);
             int heightThird = (int)((double)img.Height / 4.0 + 0.5);
             for (int i = 0; i < 4; i++)
@@ -106,26 +115,21 @@ namespace WindowsFormsApp11
                     bmps[i, j] = new Bitmap(widthThird, heightThird);
                     Graphics g = Graphics.FromImage(bmps[i, j]);
                     g.DrawImage(img, new Rectangle(0, 0, widthThird, heightThird), new Rectangle(j * widthThird, i * heightThird, widthThird, heightThird), GraphicsUnit.Pixel);
-                    resizeParts(bmps[i, j], index);
+                    // Burada butona göre boyutlandırma yapıyoruz ve buton nesnelerinin içerisine yerleştiriyoruz.
+                    btnBitmap[i, j] = new Bitmap(bmps[i, j], new Size(100, 100));
+                    Button button = this.Controls.Find("button" + index, true).FirstOrDefault() as Button;
+                    button.Image = (Image)btnBitmap[i, j];
+                    button.Visible = false;
                     g.Dispose();
                 }
             }
-        }
-
-        /*  Form içerisindeki araçların tutulduğu yerden bize lazım olan button araması yapıp
-            buton içerisine tekrar boyutlandırılmış parça resimleri aktarıyoruz.
-        */
-        private void resizeParts(Bitmap bmps , int index)
-        {
-            //TODO: burası düzelecek 
-            bitmap = new Bitmap[4, 4];
-            Button button = this.Controls.Find("button" + index, true).FirstOrDefault() as Button;
-            button.Image = (Image)(new Bitmap(bmps, new Size(100, 100)));
+            //saveImages(btnBitmap);
         }
 
         //Butonların karıştırılmasını sağlar
         private void shuffleButtons(Button[] buttons)
         {
+
             if (buttons.Length != puzzleButtonCount)
             {
                 return;
@@ -146,7 +150,7 @@ namespace WindowsFormsApp11
                     i++;
                 }
             }
-            
+
             for (int i = 0, rnd; i < puzzleButtonCount; i++)
             {
                 rnd = sayilar[i];
@@ -154,12 +158,12 @@ namespace WindowsFormsApp11
                 buttons[i].Image = buttons[rnd].Image;
                 buttons[rnd].Image = tmp.Image;
             }
-            
+
             btnVisibility(true, buttons);
         }
 
         // Butonların görünürlük değerini ayarlar
-        private void btnVisibility(bool visibility ,Button[] buttons )
+        private void btnVisibility(bool visibility, Button[] buttons)
         {
             foreach (Button button in buttons)
                 button.Visible = visibility;
@@ -168,7 +172,7 @@ namespace WindowsFormsApp11
         private void myClick(Object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            
+
             if (selectedButton == null)
             {
                 selectedButton = btn;
@@ -176,12 +180,130 @@ namespace WindowsFormsApp11
             else if (btn != selectedButton)
             {
                 Button swap = new Button();
-                swap.Image           = selectedButton.Image;
+                swap.Image = selectedButton.Image;
                 selectedButton.Image = btn.Image;
-                btn.Image   = swap.Image;
+                btn.Image = swap.Image;
+                //(Bitmap)selectedButton.Image
+                string furkan  = selectedButton.Name;
+                string furkan1 = btn.Name;
+                //buttonÇek(furkan);(Bitmap)selectedButton.Image
+                if (compareImages((Bitmap)btn.Image , buttonÇek(furkan1)))
+                //{
+                    puan += 10;
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Resimler Eşit Değildir.");
+                //}
+                if (compareImages((Bitmap)selectedButton.Image, buttonÇek(furkan)))
+                //{
+                    puan += 10;
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Resimler Eşit Değildir.");
+                //}
+                label4.Text = ""+puan;
                 selectedButton = null;
             }
         }
+
+        private Bitmap buttonÇek(string str)
+        {
+            string tmp = "button";
+            for (int i = 0; i <4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    int index = (i * 4 + j) + 1;
+                    tmp += index;
+                    if (str == tmp)
+                    {
+                        //MessageBox.Show(tmp);
+                        return btnBitmap[i,j];
+                    }
+                    tmp = "button";
+                }
+
+            }
+            return null;
+        }
+        private bool compareImages(Bitmap bmp1, Bitmap bmp2)
+        {
+            double equal = 0;
+            double notequal = 0;
+            ArrayList arl = new ArrayList();
+            ArrayList arl2 = new ArrayList();
+            for (int a = 0; a < bmp1.Width; a++)
+            {
+                for (int b = 0; b < bmp1.Height; b++)
+                {
+                    arl.Add(bmp1.GetPixel(a, b).Name);
+                    arl2.Add(bmp2.GetPixel(a, b).Name);
+                }
+            }
+
+            for (int a = 0; a < arl.Count; a++)
+            {
+                if (arl[a].ToString() == arl2[a].ToString())
+                {
+                    equal++;
+                }
+                else
+                {
+                    notequal++;
+                }
+            }
+
+            if (notequal == 0)
+            {
+                label3.Text = "%100";
+                return true;
+            }
+            else if (notequal == 10000)
+            {
+                label3.Text = "%0";
+                return false;
+            }
+            else
+                return false;
+            //else
+            //{
+            //    if (equal > notequal)
+            //    {
+            //        label3.Text = "%" + Convert.ToString(100 - ((notequal * 100) / equal)).Substring(0, 5);
+            //    }
+            //    else
+            //    {
+            //        label3.Text = "%" + Convert.ToString((equal * 100) / notequal).Substring(0, 6);
+            //    }
+            //}
+        }
+
+        // Parçalara ayrıdığımız resmi tek tek dosyaya kaydeder.
+        private void saveImages(Bitmap[,] bmp)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j <4; j++)
+                {
+                    int index = (i * 4 + j) + 1;
+                    bmp[i,j].Save(@"C:\Users\Furkan\Desktop\Puzzle\button" + index + ".jpg", ImageFormat.Jpeg);
+
+                }
+            }
+        }
+
+        private void yaz(string str)
+        {
+            string dosya_yolu = @"C:\Users\Furkan\Desktop\metinbelgesi.txt";
+            StreamWriter Yaz = new StreamWriter(dosya_yolu);
+            Yaz.WriteLine(str);
+           
+            Yaz.Close();
+        }
+
+        
     }
 }
 
@@ -195,6 +317,7 @@ namespace WindowsFormsApp11
             int width = img.Width;//Get image Height & Width of Input Image
             int one_img_h = height / rows;
             int one_img_w = width / columns;//You need Rows x Columns, So get 1/rows Height, 1/columns width of original Image
+            
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
