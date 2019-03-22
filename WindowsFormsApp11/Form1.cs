@@ -15,10 +15,10 @@ namespace WindowsFormsApp11
 {
     public partial class Form1 : Form
     {
-        // Image img;
         int puan = 15;
         Bitmap[,] btnBitmap; // Tekrar butona göre boyutlandırılmış bitmap matrisi.
         Bitmap[,] bmps;
+        List<int> skor;
         Button selectedButton = null;
         const int puzzleButtonCount = 16;
         Button[] buttons = new Button[puzzleButtonCount];
@@ -27,15 +27,7 @@ namespace WindowsFormsApp11
         public Form1()
         {
             InitializeComponent();
-            List<int> skor = readFile();
-            if (skor.Count==0)
-            {
-                label6.Text = "";
-            }
-            else
-            {
-                label6.Text = "" + skor.Max();
-            }
+            checkTheScore();
             for (int i = 0; i < puzzleButtonCount;)
             {
                 buttons[i] = this.Controls.Find("button" + ++i, true).FirstOrDefault() as Button;
@@ -48,6 +40,8 @@ namespace WindowsFormsApp11
         {
             Image img;
             puan = 15;
+            checkTheScore();
+            btnEnable(true, buttons);
             img = OpenThePicture();
             if (img == null)    // Eğer null değer gelirse boş döner
                 return;
@@ -74,6 +68,7 @@ namespace WindowsFormsApp11
                 {
                     puan = 100;
                     MessageBox.Show("TEBRİKLER KAZANDINIZ !! \nPuanınız : " + puan);
+                    btnEnable(true, buttons);
                     writeFile(""+puan);
                 }
             }
@@ -83,6 +78,20 @@ namespace WindowsFormsApp11
             }
         }
 
+        //mevcut skoru kontrol eder
+        private void checkTheScore()
+        {
+            skor = readFile();
+            if (skor.Count == 0)
+            {
+                label6.Text = "";
+            }
+            else
+            {
+                label6.Text = "" + skor.Max();
+            }
+        }
+        // Tüm butonları kontrol eder.
         private int checkThePieces(Button[] buttons)
         {
             int equal = 0;
@@ -172,6 +181,14 @@ namespace WindowsFormsApp11
             foreach (Button button in buttons)
                 button.Visible = visibility;
         }
+
+        // Oyun bitiminde butonları kitliyoruz
+        private void btnEnable(bool enabled , Button[] buttons)
+        {
+            foreach (Button button in buttons)
+                button.Enabled = enabled;
+        }
+
         // Tüm butonların click özelliği
         private void myClick(Object sender, EventArgs e)
         {
@@ -189,7 +206,7 @@ namespace WindowsFormsApp11
                 btn.Image = swap.Image;
                 string selectBtnName  = selectedButton.Name;
                 string btnName = btn.Name;
-                //TODO: Buraya puanlama eklenecek
+                
                 bool kontrol1 = compareImages((Bitmap)btn.Image, findBitmap(btnName));
                 bool kontrol2 = compareImages((Bitmap)selectedButton.Image, findBitmap(selectBtnName));
 
@@ -210,6 +227,7 @@ namespace WindowsFormsApp11
                 if (checkThePieces(buttons) == 16)
                 {
                     MessageBox.Show("TEBRİKLER KAZANDINIZ !! \nPuanınız : "+puan);
+                    btnEnable(false, buttons);
                     writeFile("" + puan);
                 }
                 //checkThePieces(buttons);
@@ -316,9 +334,18 @@ namespace WindowsFormsApp11
                 new System.IO.StreamReader(@"C:\Users\Furkan\Desktop\enyüksekskor.txt");
             while ((line = file.ReadLine()) != null)
             {
-                skorlist.Add(Int32.Parse(line));
+                if (int.TryParse(line, out int v))
+                {
+                    skorlist.Add(Int32.Parse(line));
+                }
+                else
+                {
+                    return skorlist;
+                }
+                //skorlist.Add(Int32.Parse(line));
             }
-            skorlist.Sort();
+            //skorlist.Sort();
+           
             //Console.WriteLine(skorlist.Max());
             file.Close();
             return skorlist;
